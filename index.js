@@ -32,7 +32,7 @@ const Person =  require('./models/person')
 //     }
 // ]
 morgan.token('body', (req, res) => { return JSON.stringify(req.body) })
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     //onst person = request.body
     //console.log(person)
     //response.json(person)
@@ -60,7 +60,8 @@ app.post('/api/persons', (request, response) => {
         existingPerson.number = person.number
         existingPerson.save().then(updatedPerson => {
           response.json(updatedPerson)
-        }).catch(error=>next(error))
+        })
+        .catch(error=>next(error))
       } else {
         //person.id = String(maxId + 1)
         const realPerson = new Person({
@@ -74,8 +75,10 @@ app.post('/api/persons', (request, response) => {
           response.json(savaedPerson)
         //morgan('tiny')
         })
+        .catch(error=>next(error))
       }
     })
+    .catch(error=>next(error))
     
 })
 app.get('/', (request, response) => {
@@ -143,7 +146,9 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  } 
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
 
   next(error)
 }
