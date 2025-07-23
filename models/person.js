@@ -1,18 +1,19 @@
 const mongoose = require('mongoose')
-//const password = process.argv[2]
+// const config = require('./utils/config')
+// //const password = process.argv[2]
 
-const url = process.env.MONGODB_URI
+// const url = config.MONGODB_URI
 
-mongoose.set('strictQuery',false)
+// mongoose.set('strictQuery',false)
 
-console.log('connecting to', url)
-mongoose.connect(url)
-  .then(() => {
-    console.log('connected to MongoDB')
-  })
-  .catch(error => {
-    console.log('error connecting to MongoDB:', error.message)
-  })
+// console.log('connecting to', url)
+// mongoose.connect(url)
+//   .then(() => {
+//     console.log('connected to MongoDB')
+//   })
+//   .catch(error => {
+//     console.log('error connecting to MongoDB:', error.message)
+//   })
 const personSchema = new mongoose.Schema({
   name: {
     type: String,
